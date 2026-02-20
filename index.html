@@ -3,178 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>02:17</title>
+<title>Duman Evreni</title>
 
 <style>
 body{
-    margin:0;
-    background:#000;
-    color:white;
-    font-family:Arial, sans-serif;
-    overflow-x:hidden;
-    transition:1s;
+margin:0;
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#000,#111,#000);
+color:white;
+overflow-x:hidden;
 }
 
-#intro{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    z-index:999;
-    animation:fadeOut 4s forwards;
-    animation-delay:3s;
+/* Arka plan sis animasyonu */
+body::before{
+content:"";
+position:fixed;
+width:200%;
+height:200%;
+background:radial-gradient(circle at 30% 30%,rgba(255,0,0,0.15),transparent 40%),
+radial-gradient(circle at 70% 70%,rgba(255,0,0,0.1),transparent 40%);
+animation:smoke 10s infinite alternate;
+z-index:-1;
 }
 
-@keyframes fadeOut{
-    to{opacity:0; visibility:hidden;}
+@keyframes smoke{
+0%{transform:translate(0,0);}
+100%{transform:translate(-50px,-50px);}
 }
 
-#intro h1{
-    font-size:60px;
-    letter-spacing:5px;
-}
-
-#intro p{
-    opacity:0.7;
+h1{
+text-align:center;
+margin-top:40px;
+font-size:40px;
+letter-spacing:3px;
+color:#ff2a2a;
+text-shadow:0 0 20px red;
 }
 
 .container{
-    padding:40px;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:30px;
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:30px;
+margin-top:60px;
 }
 
 .card{
-    background:#111;
-    padding:30px;
-    border-radius:20px;
-    cursor:pointer;
-    transition:0.4s;
-    transform-style:preserve-3d;
+width:220px;
+height:140px;
+background:#111;
+border-radius:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:18px;
+cursor:pointer;
+transition:0.4s;
+box-shadow:0 0 15px rgba(255,0,0,0.3);
+position:relative;
 }
 
 .card:hover{
-    transform:rotateY(10deg) rotateX(5deg) scale(1.05);
-    box-shadow:0 0 25px rgba(255,255,255,0.2);
+transform:scale(1.1) rotateY(10deg);
+box-shadow:0 0 30px red;
 }
 
-#player{
-    margin-top:30px;
-    text-align:center;
-    transform:translateY(50px);
-    opacity:0;
-    transition:0.6s;
+/* Modal */
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+padding:20px;
+text-align:center;
 }
 
-iframe{
-    width:80%;
-    height:315px;
-    border-radius:20px;
+.modal h2{
+color:#ff2a2a;
+margin-bottom:20px;
 }
 
-#lyrics{
-    margin-top:20px;
-    min-height:60px;
-    font-size:18px;
-    opacity:0.8;
+.lyrics{
+max-width:600px;
+font-size:18px;
+line-height:1.6;
+min-height:100px;
 }
 
-#moodBtn{
-    position:fixed;
-    top:20px;
-    right:20px;
-    background:#111;
-    padding:10px 20px;
-    border-radius:20px;
-    cursor:pointer;
-}
-
-#lateNight{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    opacity:0;
-    transition:1s;
-    font-size:14px;
+.close{
+margin-top:30px;
+padding:10px 20px;
+background:red;
+border:none;
+color:white;
+border-radius:10px;
+cursor:pointer;
 }
 </style>
 </head>
+
 <body>
 
-<div id="intro">
-    <h1>02:17</h1>
-    <p>Bazı şarkılar gündüz dinlenmez.</p>
-</div>
-
-<div id="moodBtn" onclick="randomMood()">Ruh Halimi Seç</div>
+<h1>DUMAN EVRENİ</h1>
 
 <div class="container">
-
-<div class="card" onclick="playSong('https://www.youtube.com/embed/VIDEO_ID_1','#400000',['Her şey yanarken…','İnsan susamaz.','Gece büyür.'])">
-Her Şeyi Yak
+<div class="card" onclick="openSong('belki')">Belki Alışman Lazım</div>
+<div class="card" onclick="openSong('senden')">Senden Daha Güzel</div>
+<div class="card" onclick="openSong('herseyi')">Her Şeyi Yak</div>
 </div>
 
-<div class="card" onclick="playSong('https://www.youtube.com/embed/VIDEO_ID_2','#200040',['Bazı duygular…','Saklanır derine.','Ama kaybolmaz.'])">
-Seni Kendime Sakladım
+<div class="modal" id="modal">
+<h2 id="songTitle"></h2>
+<div class="lyrics" id="lyrics"></div>
+<button class="close" onclick="closeModal()">Kapat</button>
 </div>
-
-<div class="card" onclick="playSong('https://www.youtube.com/embed/VIDEO_ID_3','#222',['Alışmak zor…','Kabullenmek daha zor.','Gece anlatır.'])">
-Belki Alışman Lazım
-</div>
-
-<div class="card" onclick="playSong('https://www.youtube.com/embed/VIDEO_ID_4','#333',['Bazı insanlar…','Şarkı gibidir.','Başlayınca bitmez.'])">
-Senden Daha Güzel
-</div>
-
-</div>
-
-<div id="player"></div>
-<div id="lyrics"></div>
-<div id="lateNight">Gece ilerliyor…</div>
 
 <script>
-function typeWriter(lines){
-    let box=document.getElementById("lyrics");
-    box.innerHTML="";
-    let delay=0;
-    lines.forEach(line=>{
-        setTimeout(()=>{
-            let p=document.createElement("div");
-            p.textContent=line;
-            box.appendChild(p);
-        },delay);
-        delay+=800;
-    });
+const songs = {
+belki:{
+title:"Belki Alışman Lazım",
+lyrics:"Belki alışman lazım... Bu yarım kalanlara..."
+},
+senden:{
+title:"Senden Daha Güzel",
+lyrics:"Senden daha güzel... Senden daha özel..."
+},
+herseyi:{
+title:"Her Şeyi Yak",
+lyrics:"Her şeyi yak... Yine de içimde bir umut var..."
+}
+};
+
+function openSong(key){
+document.getElementById("modal").style.display="flex";
+document.getElementById("songTitle").innerText=songs[key].title;
+typeWriter(songs[key].lyrics);
 }
 
-function playSong(url,color,lines){
-    document.body.style.background=color;
-    let player=document.getElementById("player");
-    player.innerHTML=`<iframe src="${url}" frameborder="0" allowfullscreen></iframe>`;
-    player.style.transform="translateY(0)";
-    player.style.opacity="1";
-    typeWriter(lines);
+function closeModal(){
+document.getElementById("modal").style.display="none";
+document.getElementById("lyrics").innerText="";
 }
 
-function randomMood(){
-    const songs=[
-        ['https://www.youtube.com/embed/VIDEO_ID_1','#400000',['Her şey yanarken…','İnsan susamaz.','Gece büyür.']],
-        ['https://www.youtube.com/embed/VIDEO_ID_2','#200040',['Bazı duygular…','Saklanır derine.','Ama kaybolmaz.']],
-        ['https://www.youtube.com/embed/VIDEO_ID_3','#222',['Alışmak zor…','Kabullenmek daha zor.','Gece anlatır.']],
-        ['https://www.youtube.com/embed/VIDEO_ID_4','#333',['Bazı insanlar…','Şarkı gibidir.','Başlayınca bitmez.']]
-    ];
-    let random=songs[Math.floor(Math.random()*songs.length)];
-    playSong(random[0],random[1],random[2]);
+function typeWriter(text){
+let i=0;
+const speed=40;
+function typing(){
+if(i<text.length){
+document.getElementById("lyrics").innerHTML+=text.charAt(i);
+i++;
+setTimeout(typing,speed);
 }
-
-setTimeout(()=>{
-    document.getElementById("lateNight").style.opacity="0.6";
-},60000);
+}
+typing();
+}
 </script>
 
 </body>
